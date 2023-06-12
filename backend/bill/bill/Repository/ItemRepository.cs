@@ -29,6 +29,23 @@ namespace bill.Repository
                                               }).ToList();
             return result;
         }
+        public List<ItemViewModel> GetByCode(string code)
+        {
+            List<ItemViewModel> result = (from item in billDbContext.items
+                                            join unit in billDbContext.units on item.unit_id equals unit.unit_id
+                                            where item.code == code
+                                            select new ItemViewModel
+                                            {
+                                                item_id = item.item_id,
+                                                code = item.code,
+                                                name = item.name,
+                                                price = (float)item.price,
+                                                unit_id = unit.unit_id,
+                                                unit_name = unit.name
+                                            }).ToList();
+            return result;
+        }
+
         public void AddItem(string code, string name, float price, int unit_id)
         {
             item newItem = new item { name = name,
@@ -38,6 +55,28 @@ namespace bill.Repository
                                     };
 
             billDbContext.items.Add(newItem);
+            billDbContext.SaveChanges();
+        }
+        public void UpdateItem(int item_id, string? code, string? name, float? price, int? unit_id)
+        {
+            var itemToEdit = billDbContext.items.FirstOrDefault(i => i.item_id == item_id);
+
+            if (itemToEdit != null)
+            {
+                itemToEdit.code = code;
+                itemToEdit.name = name;
+                itemToEdit.price = (decimal?)price;
+                itemToEdit.unit_id = (int)unit_id;
+
+                billDbContext.SaveChanges();
+            }
+        }
+
+        public void DeleteItem(int item_id)
+        {
+            var delItem = billDbContext.items.Where(i => i.item_id == item_id);
+
+            billDbContext.items.RemoveRange(delItem);
             billDbContext.SaveChanges();
         }
     }

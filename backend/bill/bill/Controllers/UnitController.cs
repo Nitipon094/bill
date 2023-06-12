@@ -35,11 +35,6 @@ namespace bill.Controllers
             return Ok(u.name);
         }
 
-        [HttpPost]
-        public IActionResult DeleteUnit(UnitViewModel u)
-        {
-            unitRepository.DeleteUnit(u.unit_id);
-            return Ok(u.unit_id);
-        }
+       
     }
 }
