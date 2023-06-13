@@ -50,7 +50,7 @@ namespace bill.Repository
         {
             item newItem = new item { name = name,
                                       code = code,
-                                      price = (decimal?)price,
+                                      price = price,
                                       unit_id = unit_id
                                     };
 
@@ -65,7 +65,7 @@ namespace bill.Repository
             {
                 itemToEdit.code = code;
                 itemToEdit.name = name;
-                itemToEdit.price = (decimal?)price;
+                itemToEdit.price = price;
                 itemToEdit.unit_id = (int)unit_id;
 
                 billDbContext.SaveChanges();

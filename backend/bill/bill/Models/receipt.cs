@@ -11,7 +11,7 @@ public partial class receipt
 
     public string? date { get; set; }
 
-    public string? total_price { get; set; }
+    public float? total_price { get; set; }
 
     public virtual ICollection<receipt_detail> receipt_details { get; set; } = new List<receipt_detail>();
 }
