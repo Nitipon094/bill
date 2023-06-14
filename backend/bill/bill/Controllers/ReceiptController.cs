@@ -24,8 +24,8 @@ namespace bill.Controllers
         [HttpPost]
         public IActionResult AddReceipt(ReceiptViewModel r)
         {
-            ReceiptRepository.AddReceipt(r.code, r.date, r.total_price);
-            return Ok(1);
+            var result = ReceiptRepository.AddReceipt(r.code, r.date, r.total_price, r.net_price, r.vat, r.pre_vat, r.discount);
+            return Ok(result);
         }
     }
 }

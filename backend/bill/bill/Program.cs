@@ -13,6 +13,7 @@ builder.Services.AddDbContext<BillDbContext>(options =>
 builder.Services.AddScoped<UnitRepository>();
 builder.Services.AddScoped<ItemRepository>();
 builder.Services.AddScoped<ReceiptRepository>();
+builder.Services.AddScoped<ReceiptDetailRepository>();
 
 builder.Services.AddCors(x =>
 {

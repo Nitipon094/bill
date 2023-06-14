@@ -27,14 +27,25 @@ namespace bill.Repository
             return result;
         }
 
-        public void AddReceipt(string code, string date, float? total_price)
+        public int AddReceipt(string code, DateTime date, float? total_price, float net_price, float vat, float pre_vat, float discount)
         {
-            receipt newRecipt = new receipt{ code = code,
+            receipt newReceipt = new receipt{ code = code,
                                              date = date,
-                                             total_price = total_price
+                                             total_price = total_price,
+                                             net_price = net_price,
+                                             vat = vat,
+                                             pre_vat = pre_vat,
+                                             discount = discount
                                             };
-            billDbContext.receipts.Add(newRecipt);
+            billDbContext.receipts.Add(newReceipt);
             billDbContext.SaveChanges();
+
+            int receipt_id = billDbContext.receipts
+                            .OrderByDescending(r => r.receipt_id)
+                            .Select(r => r.receipt_id)
+                            .FirstOrDefault();
+
+            return receipt_id;
         }
     }
 }
