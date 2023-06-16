@@ -22,6 +22,13 @@ namespace bill.Controllers
         }
 
         [HttpPost]
+        public IActionResult GetById(ReceiptDetailViewModel d)
+        {
+            var result = receiptDetailRepository.GetById(d.receipt_id);
+            return Ok(result);
+        }
+
+        [HttpPost]
         public IActionResult AddReceiptDetail(ReceiptDetailViewModel d)
         {
             receiptDetailRepository.AddReceiptDetail(d.receipt_id, d.item_id, d.quantity, d.total_item_price);

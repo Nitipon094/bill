@@ -8,7 +8,7 @@
 
         public DateTime date { get; set; }
 
-        public float? total_price { get; set; }
+        public float total_price { get; set; }
 
         public float vat { get; set; }
 

@@ -22,20 +22,43 @@ namespace bill.Repository
                                               receipt_id = r.receipt_id,
                                               code = r.code,
                                               date = r.date,
-                                              total_price = r.total_price
+                                              total_price = (float)r.total_price,
+                                              vat = (float)r.vat,
+                                              pre_vat = (float)r.pre_vat,
+                                              discount = (float)r.discount,
+                                              net_price = (float)r.net_price
                                           }).ToList();
             return result;
         }
 
-        public int AddReceipt(string code, DateTime date, float? total_price, float net_price, float vat, float pre_vat, float discount)
+        public List<ReceiptViewModel> GetById(int id)
+        {
+            List<ReceiptViewModel> result = (from r in billDbContext.receipts
+                                             where r.receipt_id == id
+                                             orderby r.receipt_id ascending
+                                             select new ReceiptViewModel
+                                             {
+                                                 receipt_id = r.receipt_id,
+                                                 code = r.code,
+                                                 date = r.date,
+                                                 total_price = (float)r.total_price,
+                                                 vat = (float)r.vat,
+                                                 pre_vat = (float)r.pre_vat,
+                                                 discount = (float)r.discount,
+                                                 net_price = (float)r.net_price
+                                             }).ToList();
+            return result;
+        }
+
+        public int AddReceipt(string code, DateTime date, float total_price, float net_price, float vat, float pre_vat, float discount)
         {
             receipt newReceipt = new receipt{ code = code,
                                              date = date,
-                                             total_price = total_price,
-                                             net_price = net_price,
-                                             vat = vat,
-                                             pre_vat = pre_vat,
-                                             discount = discount
+                                             total_price = (decimal?)total_price,
+                                             net_price = (decimal?)net_price,
+                                             vat = (decimal?)vat,
+                                             pre_vat = (decimal?)pre_vat,
+                                             discount = (decimal?)discount
                                             };
             billDbContext.receipts.Add(newReceipt);
             billDbContext.SaveChanges();

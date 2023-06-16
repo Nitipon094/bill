@@ -42,10 +42,9 @@ public partial class BillDbContext : DbContext
 
             entity.HasIndex(e => e.unit_id, "unitid_idx");
 
-            entity.Property(e => e.item_id).ValueGeneratedNever();
             entity.Property(e => e.code).HasMaxLength(45);
             entity.Property(e => e.name).HasMaxLength(45);
-            entity.Property(e => e.price).HasPrecision(2);
+            entity.Property(e => e.price).HasPrecision(7, 2);
 
             entity.HasOne(d => d.unit).WithMany(p => p.items)
                 .HasForeignKey(d => d.unit_id)
@@ -59,10 +58,15 @@ public partial class BillDbContext : DbContext
 
             entity.ToTable("receipt");
 
-            entity.Property(e => e.receipt_id).ValueGeneratedNever();
             entity.Property(e => e.code).HasMaxLength(45);
-            entity.Property(e => e.date).HasMaxLength(45);
-            entity.Property(e => e.total_price).HasMaxLength(45);
+            entity.Property(e => e.date).HasColumnType("datetime");
+            entity.Property(e => e.discount).HasPrecision(7, 2);
+            entity.Property(e => e.net_price).HasPrecision(7, 2);
+            entity.Property(e => e.pre_vat).HasPrecision(7, 2);
+            entity.Property(e => e.total_price)
+                .HasPrecision(7, 2)
+                .HasDefaultValueSql("'0.00'");
+            entity.Property(e => e.vat).HasPrecision(7, 2);
         });
 
         modelBuilder.Entity<receipt_detail>(entity =>
@@ -74,6 +78,8 @@ public partial class BillDbContext : DbContext
             entity.HasIndex(e => e.item_id, "item_id_idx");
 
             entity.HasIndex(e => e.receipt_id, "receipt_id_idx");
+
+            entity.Property(e => e.total_item_price).HasPrecision(7, 2);
 
             entity.HasOne(d => d.item).WithMany(p => p.receipt_details)
                 .HasForeignKey(d => d.item_id)
