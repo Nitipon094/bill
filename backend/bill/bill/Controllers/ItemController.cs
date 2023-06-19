@@ -21,6 +21,27 @@ namespace bill.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        public IActionResult GetMaxCode()
+        {
+            var maxCode = "";
+            var items = itemRepository.Getall();
+            if (items == null || items .Count == 0)
+            {
+                maxCode = "PD-00000001";
+            }
+            else
+            {
+                maxCode = itemRepository.GetMaxCode();
+                string prefix = maxCode.Substring(0, maxCode.IndexOf("-") + 1);
+                string numberString = maxCode.Substring(maxCode.IndexOf("-") + 1);
+                int number = int.Parse(numberString);
+                number++;
+                maxCode = prefix + number.ToString("D6");
+            }
+            return Ok(maxCode);
+        }
+
         [HttpPost]
         public IActionResult GetByCode(ItemViewModel i)
         {
@@ -38,7 +59,7 @@ namespace bill.Controllers
         [HttpPost]
         public IActionResult UpdateItem(ItemViewModel i)
         {
-            itemRepository.UpdateItem(i.item_id, i.code, i.name, (float)i.price, (int)i.unit_id);
+            itemRepository.UpdateItem(i.item_id, i.name, (float)i.price, (int)i.unit_id);
             return Ok(1);
         }
 

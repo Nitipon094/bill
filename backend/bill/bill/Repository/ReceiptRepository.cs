@@ -30,7 +30,34 @@ namespace bill.Repository
                                           }).ToList();
             return result;
         }
+        public List<ReceiptViewModel> GetallFilterDate(string sDate, string eDate)
+        {
+            DateTime startDate = DateTime.Parse(sDate).Date;
+            DateTime endDate = DateTime.Parse(eDate).Date;
 
+            List<ReceiptViewModel> result = (from r in billDbContext.receipts
+                                             where r.date.Date >= startDate && r.date.Date <= endDate
+                                             orderby r.receipt_id ascending
+                                             select new ReceiptViewModel
+                                             {
+                                                 receipt_id = r.receipt_id,
+                                                 code = r.code,
+                                                 date = r.date,
+                                                 total_price = (float)r.total_price,
+                                                 vat = (float)r.vat,
+                                                 pre_vat = (float)r.pre_vat,
+                                                 discount = (float)r.discount,
+                                                 net_price = (float)r.net_price
+                                             }).ToList();
+
+            return result;
+        }
+
+        public string GetMaxCode()
+        {
+            var maxCode = billDbContext.receipts.Max(receipt => receipt.code);
+            return maxCode;
+        }
         public List<ReceiptViewModel> GetById(int id)
         {
             List<ReceiptViewModel> result = (from r in billDbContext.receipts

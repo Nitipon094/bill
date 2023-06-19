@@ -29,6 +29,12 @@ namespace bill.Repository
                                               }).ToList();
             return result;
         }
+        public string GetMaxCode() 
+        {
+            var maxCode = billDbContext.items.Max(item => item.code);
+
+            return maxCode;
+        }
         public List<ItemViewModel> GetByCode(string code)
         {
             List<ItemViewModel> result = (from item in billDbContext.items
@@ -50,22 +56,21 @@ namespace bill.Repository
         {
             item newItem = new item { name = name,
                                       code = code,
-                                      price = (decimal?)price,
+                                      price = price,
                                       unit_id = unit_id
                                     };
 
             billDbContext.items.Add(newItem);
             billDbContext.SaveChanges();
         }
-        public void UpdateItem(int item_id, string? code, string? name, float? price, int? unit_id)
+        public void UpdateItem(int item_id, string? name, float price, int? unit_id)
         {
             var itemToEdit = billDbContext.items.FirstOrDefault(i => i.item_id == item_id);
 
             if (itemToEdit != null)
             {
-                itemToEdit.code = code;
                 itemToEdit.name = name;
-                itemToEdit.price = (decimal?)price;
+                itemToEdit.price = price;
                 itemToEdit.unit_id = (int)unit_id;
 
                 billDbContext.SaveChanges();
