@@ -1,6 +1,7 @@
 ﻿using bill.Repository;
 using bill.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace bill.Controllers
 {
@@ -21,17 +22,17 @@ namespace bill.Controllers
             return Ok(result);
         }
         [HttpPost]
-        public IActionResult GetallFilterDate(string? startDate, string? endDate)
+        public IActionResult GetallFilterDate(ReceiptFilterViewModel r)
         {
-            if(startDate == null)
+            if (r.startDate == null)
             {
-                startDate = "01/01/2000";
+                r.startDate = "2000-01-01";
             }
-            if (endDate == null)
+            if (r.endDate == null)
             {
-                endDate = DateTime.Now.ToString("dd/MM/yyyy");
+                r.endDate = DateTime.Now.ToString("yyyy-MM-dd");
             }
-            var result = ReceiptRepository.GetallFilterDate(startDate, endDate);
+            var result = ReceiptRepository.GetallFilterDate(r.startDate, r.endDate);
             return Ok(result);
         }
         [HttpGet]
@@ -56,16 +57,23 @@ namespace bill.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetById(ReceiptViewModel r)
+        public IActionResult GetById(ReceiptIdViewModel r)
         {
             var result = ReceiptRepository.GetById(r.receipt_id);
             return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult AddReceipt(ReceiptViewModel r)
+        public IActionResult AddReceipt(ReceiptAddViewModel r)
         {
             var result = ReceiptRepository.AddReceipt(r.code, r.date, r.total_price, r.net_price, r.vat, r.pre_vat, r.discount);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public IActionResult GetMinDateReceipt()
+        {
+            var result = ReceiptRepository.GetMinDateReceipt();
             return Ok(result);
         }
     }

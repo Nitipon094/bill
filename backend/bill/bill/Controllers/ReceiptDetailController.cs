@@ -29,7 +29,7 @@ namespace bill.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddReceiptDetail(ReceiptDetailViewModel d)
+        public IActionResult AddReceiptDetail(ReceiptDetailAddViewModel d)
         {
             receiptDetailRepository.AddReceiptDetail(d.receipt_id, d.item_id, d.quantity, d.total_item_price);
             return Ok(1);

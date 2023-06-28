@@ -1,7 +1,9 @@
 ﻿using bill.Context;
 using bill.Models;
 using bill.ViewModel;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
+using System;
 
 namespace bill.Repository
 {
@@ -30,10 +32,18 @@ namespace bill.Repository
                                           }).ToList();
             return result;
         }
+
+        public DateOnly GetMinDateReceipt()
+        {
+            var minDate = billDbContext.receipts.Min(receipt => receipt.date);
+            return new DateOnly(minDate.Day, minDate.Month, minDate.Year);
+        }
+
+
         public List<ReceiptViewModel> GetallFilterDate(string sDate, string eDate)
         {
-            DateTime startDate = DateTime.Parse(sDate).Date;
-            DateTime endDate = DateTime.Parse(eDate).Date;
+            DateTime startDate = DateTime.Parse(sDate);
+            DateTime endDate = DateTime.Parse(eDate);
 
             List<ReceiptViewModel> result = (from r in billDbContext.receipts
                                              where r.date.Date >= startDate && r.date.Date <= endDate

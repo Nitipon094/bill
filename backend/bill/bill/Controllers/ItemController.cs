@@ -43,28 +43,28 @@ namespace bill.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetByCode(ItemViewModel i)
+        public IActionResult GetByCode(ItemCodeViewModel i)
         {
             var result = itemRepository.GetByCode(i.code);
             return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult AddItem(ItemViewModel i) 
+        public IActionResult AddItem(ItemAddViewModel i) 
         {
-            itemRepository.AddItem(i.code, i.name, (float)i.price, (int)i.unit_id);
+            itemRepository.AddItem(i.code, i.name, i.price, i.unit_id);
             return Ok(1);
         }
 
         [HttpPost]
-        public IActionResult UpdateItem(ItemViewModel i)
+        public IActionResult UpdateItem(ItemUpdateViewModel i)
         {
-            itemRepository.UpdateItem(i.item_id, i.name, (float)i.price, (int)i.unit_id);
+            itemRepository.UpdateItem(i.item_id, i.name, i.price, i.unit_id);
             return Ok(1);
         }
 
         [HttpPost]
-        public IActionResult DeleteItem(ItemViewModel i)
+        public IActionResult DeleteItem(ItemDeleteViewModel i)
         {
             itemRepository.DeleteItem(i.item_id);
             return Ok(1);
