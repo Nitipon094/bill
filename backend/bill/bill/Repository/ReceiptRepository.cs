@@ -36,7 +36,7 @@ namespace bill.Repository
         public DateOnly GetMinDateReceipt()
         {
             var minDate = billDbContext.receipts.Min(receipt => receipt.date);
-            return new DateOnly(minDate.Day, minDate.Month, minDate.Year);
+            return new DateOnly(minDate.Year, minDate.Month, minDate.Day);
         }
 
 
